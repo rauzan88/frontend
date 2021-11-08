@@ -1,0 +1,27 @@
+﻿<div class="d-flex justify-content-center">
+    <label style="font-family: Verdana, sans-serif;font-size: 20px;color:#881010">Plantilla</label>
+</div>
+<div style="text-align: right;">
+    <button type="button" class="btn btn-link" style="color:black" (click)="regresarLista()">Regresar a la
+      lista</button>
+  </div>
+<div *ngIf="lista.length > 0">
+    <table id="tabla-solicitud" datatable class="table table-bordered table-hover table-sm">
+        <thead class="table-header text-center">
+            <tr>
+                <th style="width:5%">Nombre</th>
+                <th style="width:10%;">Formato</th>
+                <th style="width:5%;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of lista">
+                <td>{{item.txNombre}}</td>
+                <td>{{item.txFormato}}</td>
+                <td title="Al hacer click izquierdo descarga la plantilla">
+                    <a *ngIf="validationFileNameToDownload(item.txNombre)" class="btn float-right button-download-report" href="{{download(item)}}" target="_blank" >Generar Plantilla</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

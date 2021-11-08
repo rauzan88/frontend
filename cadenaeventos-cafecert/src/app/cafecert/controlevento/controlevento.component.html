@@ -1,0 +1,28 @@
+﻿<div style="background-color:  white;padding: 30px;">
+    <div class="table-responsive-xl" >
+        <h6 *ngIf=" (lista | json) == '[]' ">No se encontraron validaciones parametrizadas en el sistema</h6>
+        <table class="table table-sm  table-hover" *ngIf=" (lista | json) != '[]' ">
+            <thead >
+                <tr>
+                    <td scope="col">Tipo</td>
+                    <td scope="col">Grupo</td>
+                    <td scope="col">Pregunta</td>
+                    <td scope="col">Valor esperado</td>
+                    <td scope="col">Respuesta</td>
+                    <td scope="col">Resultado</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of lista" >
+                    <td>{{item.typevalidation}}</td>
+                    <td>{{item.group}}</td>
+                    <td title="Al hacer click izquierdo accedera al formulario"><a (click)="iraformulario(item)" class="text-info">{{item.question}}</a></td>
+                    <td>{{item.expected}}</td>
+                    <td>{{item.answers}}</td>
+                    <td title="{{item.message}}">{{item.result}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- <router-outlet></router-outlet> -->

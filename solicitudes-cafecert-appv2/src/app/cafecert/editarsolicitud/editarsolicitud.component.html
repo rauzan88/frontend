@@ -1,0 +1,1165 @@
+﻿<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="return-link">
+            <button type="button" class="btn btn-link" style="color:#881010" (click)="goBackRequestList()">
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                Regresar
+            </button>
+        </div>
+        <label style="font-family: Verdana, sans-serif;font-size: 20px;color:#881010">Modificar Solicitud</label>
+    </div>
+
+    <div>
+        <div>
+            <form class="form-group" [formGroup]="editRequestForm" enctype="multipart/form-data">
+                <mat-accordion>
+                    <mat-expansion-panel [expanded]="openPanel" (click)="onChangePanel(true)">
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Programa de Certificación
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="codigosolicitud">*Código de Solicitud:</label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" formControlName="codigosolicitud">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-6 div-solicitud-form-label">
+                                <label for="pregunta1">*Tipo de Certificación:</label>
+                            </div>
+                            <div class="col-6 div-solicitud-input column-checkbox">
+                                <div class="form-check" *ngFor="let certificationType of listaTiposCert">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input"
+                                            formControlName="rbtipocertificacion" name="rbtipocertificacion"
+                                            value="{{certificationType.cdCertificationType}}"
+                                            (change)="onChangeCertificationType($event)" required
+                                            [checked]="certificationType.check" />
+                                        {{certificationType.txDescription}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div [style.display]="isRequestDateVisible ? 'block' : 'none'">
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="fechasolicitud">*Fecha Solicitud</label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="date" class="form-control input-date-request"
+                                        formControlName="fechasolicitud" id="fechasolicitud" name="fechasolicitud"
+                                        >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div [style.display]="isCertificationCodeVisible ? 'block' : 'none'">
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="codigocertificado">*Código de Certificado Vigente:</label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="text" class="form-control input-request"
+                                        formControlName="codigocertificado">
+                                </div>
+                            </div>
+                        </div>
+                        <!--
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col div-solicitud-form-label">
+                                <label for="listaPaises">*País de Certificación</label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <select formControlName="itemPaises" class="form-control select-request">
+                                    <option value="">--Seleccione--</option>
+                                    <option value="{{pais.cdCountry}}" *ngFor="let pais of listaPaises">
+                                        {{pais.txNameCountry}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        -->
+
+
+                        <div class="row div-solicitud-form div-solicitud-form-label" id="programacertificacion"
+                            title="Programa">
+                            <div class="col div-solicitud-form-label">
+                                <label for="rbtipoprograma">*Programa:</label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <div class="form-check" *ngFor="let programa of listaProgramas">
+                                    <label class="form-check-label label-checkbox">
+                                        <input type="checkbox" class="form-check-input" name="rbtipoprograma"
+                                            (change)="onChangeProgram(programa, $event)"
+                                            formControlName="rbtipoprograma" value="{{programa.id}}"
+                                            [checked]="programa.check" />
+                                        <span class="checkmark"></span>
+                                        {{programa.text}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div [style.display]="isProgramaDor ? 'block' : 'none'">
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col div-solicitud-form-label">
+                                    <label for="rbtipoprograma">*Programa DOR:</label>
+                                </div>
+                                <div class="col div-solicitud-input column-checkbox">
+                                    <div class="form-check" *ngFor="let programa of listaProgramasDOR">
+                                        <label class="form-check-label label-checkbox">
+                                            <input type="checkbox" class="form-check-input" name="rbtipoprogramaDOR"
+                                                value="{{programa.cdRegion}}" formControlName="programador"
+                                                (change)="onChangeProgramaDOR(programa, $event)"
+                                                [checked]="programa.check" required />
+                                            <span class="checkmark"></span>
+                                            {{programa.txDescription}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div *ngIf="f.rbtipocertificacion.errors?.required" class="alert alert-danger">
+                            <div>
+                                Debe escoger un tipo de certificación requerido.
+                            </div>
+                        </div>
+                        <div *ngIf="f.fechasolicitud.invalid" class="alert alert-danger">
+                            <div *ngIf="f.fechasolicitud.errors.required">Debe escoger una fecha de la solicitud.</div>
+                        </div>
+                        <div *ngIf="isCertificationCodeVisible && f.codigocertificado.value==''"
+                            class="alert alert-danger">
+                            <div>Código de certificado es requerido.</div>
+                        </div>
+                        <div *ngIf="f.itemPaises.invalid" class="alert alert-danger">
+                            <div *ngIf="f.itemPaises.errors.required">Debe escoger un País de la lista.</div>
+                        </div>
+                        <div *ngIf="validateProgramType()" class="alert alert-danger">
+                            <div>Debe escoger el tipo del programa.</div>
+                        </div>
+                        <div *ngIf="isProgramaDor && validateProgramDor()" class="alert alert-danger">
+                            <div>Debe escoger al menos un del programa DOR.</div>
+                        </div>
+                        <br>
+                        <div class="row" id="nota">
+                            <label id="nota1">
+                                <b>NOTA 1:</b> <br>
+                                *DO y DOR Aplican: Países miembros de la CAN (Colombia, Perú, Ecuador y Bolivia). <br>
+                                *IGP Aplica: Para los cafés a certifica que se comercializan en los países miembros de
+                                la Unión
+                                Europea y Suiza.
+                            </label>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel (click)="onChangePanel()">
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Información Cliente
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="nitcliente">*Nit:</label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" placeholder="Nit del cliente" formControlName="nitcliente"
+                                    class="form-control input-request" [readonly]="isClientVisible">
+                            </div>
+                        </div>
+
+                        <div class="rows" [style.display]="isClientVisible ? 'block' : 'none'">
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="nombreempresa">*Nombre de la Empresa: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input class="form-control input-request" type="text" name="nombreempresa"
+                                        formControlName="nombreempresa" required>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="actividadindustrial">
+                                        *Actividad Industrial:
+                                    </label>
+                                </div>
+                                <div class="col div-solicitud-input column-checkbox">
+                                    <div class="form-check"
+                                        *ngFor="let actividadindustrial of listaActividadesIndustriales">
+                                        <label class="form-check-label label-checkbox">
+                                            <input type="checkbox" class="form-check-input" name="cbactividadindustrial"
+                                                formControlName="cbactividadindustrial"
+                                                value="{{actividadindustrial.cdIndustrialActivity}}"
+                                                [checked]="actividadindustrial.check"
+                                                (change)="onChangeIndustryActivity(actividadindustrial, $event)"
+                                                required />
+                                            <span class="checkmark"></span>
+                                            {{actividadindustrial.txNameActivity}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="listaPaisesCliente">*País: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <select formControlName="paises" (change)="onChangeCountry()"
+                                        class="form-control select-request" required>
+                                        <option value="">--Seleccione--</option>
+                                        <option value="{{pais.cdCountry}}" *ngFor="let pais of listaPaisesCliente">
+                                            {{pais.txNameCountry}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="listaDepartamentos">*Departamento: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <select formControlName="departamentos" (change)="onChangeState()"
+                                        class="form-control select-request" required>
+                                        <option value="">--Seleccione--</option>
+                                        <option value="{{departamento.cdState}}"
+                                            *ngFor="let departamento of listaDepartamentos">{{departamento.txNameState}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="listaCiudades">*Ciudad: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <select formControlName="ciudades" (change)="onChangeCity()"
+                                        class="form-control select-request" required>
+                                        <option value="">--Seleccione--</option>
+                                        <option value="{{ciudad.cdCity}}" *ngFor="let ciudad of listaCiudades">
+                                            {{ciudad.txNameCity}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="direccionempresa">*Dirección de la Empresa: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="text" name="direccionempresa" class="form-control input-request"
+                                        formControlName="direccionempresa" (keyup)="onKeyUpSame(1)" required>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="direccioncorrespondencia">*Dirección Correspondencia: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <label for="preguntadireccion">Misma dirección de la empresa: </label>
+                                        </div>
+                                        <div class="col-5 column-checkbox">
+                                            <div class="form-check" *ngFor="let respuesta of listaRespuestaMismaDir">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input"
+                                                        name="preguntadireccion" formControlName="preguntadireccion"
+                                                        value="{{respuesta.text}}" [checked]="respuesta.check"
+                                                        (change)="onChangeQuestionAddres($event)" required />
+                                                    {{respuesta.text}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="text" class="form-control input-request"
+                                                name="direccioncorrespondencia"
+                                                formControlName="direccioncorrespondencia" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="numerofijo">Número Fijo: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <input type="tel" class="form-control input-request"
+                                                style="padding: .375rem .34rem" name="prefijo"
+                                                formControlName="prefijo">
+                                        </div>
+                                        <div class="col-2">
+                                            <input type="text" class="form-control input-request" name="indicativo"
+                                                formControlName="indicativo">
+                                        </div>
+                                        <div class="col-7">
+                                            <input type="number" min="0" onkeydown="return event.keyCode !== 69"
+                                                class="form-control input-request" name="numerofijo"
+                                                formControlName="numerofijo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="celular">Celular: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="number" min="0" onkeydown="return event.keyCode !== 69" name="celular"
+                                        class="form-control input-request" formControlName="celular">
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="email">*E-mail Corporativo: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="email" name="email" class="form-control input-request"
+                                        formControlName="email" required>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="emailnotificacionjudicial">*Notificación Judicial (inscrito en Cámara
+                                        de
+                                        Comercio):
+                                    </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="email" name="emailnotificacionjudicial"
+                                        class="form-control input-request" formControlName="emailnotificacionjudicial"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="website">Dirección Página Web: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="url" name="website" class="form-control input-request"
+                                        formControlName="website">
+                                </div>
+                            </div>
+
+                            <div *ngIf="f.nombreempresa.invalid" class="alert alert-danger div-alert-error">
+                                <div *ngIf="f.nombreempresa.errors.required">Nombre de la empresa es requerida.</div>
+                            </div>
+
+                            <div *ngIf="validateIndustrialActivity()" class="alert alert-danger div-alert-error">Debe
+                                escoger una actividad industrial al menos.</div>
+
+                            <div *ngIf="f.paises.invalid" class="alert alert-danger div-alert-error">
+                                <div *ngIf="f.paises.errors.required">Debe escoger un País de la lista.</div>
+                            </div>
+
+                            <div *ngIf="f.departamentos.invalid" class="alert alert-danger div-alert-error">
+                                <div *ngIf="f.departamentos.errors.required">Debe escoger un Departamento de la lista.
+                                </div>
+                            </div>
+
+                            <div *ngIf="f.ciudades.invalid" class="alert alert-danger div-alert-error">
+                                <div *ngIf="f.ciudades.errors.required">Debe escoger una Ciudad de la lista.</div>
+                            </div>
+
+                            <div *ngIf="f.direccionempresa.invalid" class="alert alert-danger div-alert-error">
+                                <div *ngIf="f.direccionempresa.errors.required">Dirección de la empresa es requerido.
+                                </div>
+                            </div>
+
+                            <div *ngIf="f.direccioncorrespondencia.invalid" class="alert alert-danger div-alert-error">
+                                <div *ngIf="f.direccioncorrespondencia.errors.required">
+                                    Dirección de la correspondencia es requerido.
+                                </div>
+                            </div>
+                            <!--
+                            <div *ngIf="f.numerofijo.invalid" class="alert alert-danger div-alert-error">
+                                <div *ngIf="f.numerofijo.errors.required">Número fijo es requerido.</div>
+                            </div>
+
+                            <div *ngIf="f.celular.invalid" class="alert alert-danger div-alert-error">
+                                <div *ngIf="f.celular.errors.required">Celular es requerido.</div>
+                            </div>
+                            -->
+
+
+                            <div *ngIf="f.email.invalid" class="alert alert-danger div-alert-error">
+                                <div *ngIf="f.email.errors.required">Email es requerido.</div>
+                            </div>
+
+                            <div *ngIf="f.emailnotificacionjudicial.invalid" class="alert alert-danger div-alert-error">
+                                <div *ngIf="f.emailnotificacionjudicial.errors.required">
+                                    Email de notificación judicial es requerido.
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel (click)="onChangePanel()">
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Contacto Principal
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="nombrescontacto">*Nombre(s): </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="nombrescontacto"
+                                    formControlName="nombrescontacto" (keyup)="onKeyUpSame(2)" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="apellidoscontacto">*Apellido(s): </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="apellidoscontacto"
+                                    formControlName="apellidoscontacto" (keyup)="onKeyUpSame(3)" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="direccioncontacto">*Dirección: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="direccioncontacto"
+                                    formControlName="direccioncontacto" (keyup)="onKeyUpSame(4)" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="cargocontacto">*Cargo: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="cargocontacto"
+                                    formControlName="cargocontacto" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="emailcorpcontacto">*Email Corpotativo: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="email" class="form-control input-request" name="emailcorpcontacto"
+                                    formControlName="emailcorpcontacto" (keyup)="onKeyUpSame(5)" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="telefonocontacto">Teléfono: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="number" min="0" onkeydown="return event.keyCode !== 69"
+                                    class="form-control input-request" name="telefonocontacto"
+                                    formControlName="telefonocontacto" (keyup)="onKeyUpSame(6)">
+                            </div>
+                        </div>
+
+                        <div *ngIf="f.nombrescontacto.invalid" class="alert alert-danger div-alert-error">
+                            <div *ngIf="f.nombrescontacto.errors.required">Nombres del contacto es requerido.</div>
+                        </div>
+
+                        <div *ngIf="f.apellidoscontacto.invalid" class="alert alert-danger div-alert-error">
+                            <div *ngIf="f.apellidoscontacto.errors.required">Apellidos del contacto es requerido.</div>
+                        </div>
+
+                        <div *ngIf="f.direccioncontacto.invalid" class="alert alert-danger div-alert-error">
+                            <div *ngIf="f.direccioncontacto.errors.required">Dirección del contacto es requerido.</div>
+                        </div>
+
+                        <div *ngIf="f.cargocontacto.invalid" class="alert alert-danger div-alert-error">
+                            <div *ngIf="f.cargocontacto.errors.required">Cargo del contacto es requerido.</div>
+                        </div>
+
+                        <div *ngIf="f.emailcorpcontacto.invalid" class="alert alert-danger div-alert-error">
+                            <div *ngIf="f.emailcorpcontacto.errors.required">Email del contacto es requerido.</div>
+                        </div>
+
+                        <!--
+                        <div *ngIf="f.telefonocontacto.invalid" class="alert alert-danger div-alert-error">
+                            <div *ngIf="f.telefonocontacto.errors.required">Teléfono del contacto es requerido.</div>
+                        </div>
+                        -->
+
+                    </mat-expansion-panel>
+                    <mat-expansion-panel (click)="onChangePanel()">
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Representante Legal
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row div-solicitud-form">
+                            <div class="col">
+                                <label for="preguntamismocontacto">Mismo Contacto Principal: </label>
+                            </div>
+                            <div class="col column-checkbox">
+                                <div class="form-check" *ngFor="let respuesta of listaRespuestaMismoContacto">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="preguntamismocontacto"
+                                            formControlName="preguntamismocontacto" value="{{respuesta.text}}"
+                                            [checked]="respuesta.check" (change)="onChangeQuestionContact($event)" />
+                                        {{respuesta.text}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="nombresrepresentante">*Nombre(s): </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="nombresrepresentante"
+                                    formControlName="nombresrepresentante" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="apellidosrepresentante">*Apellido(s): </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="apellidosrepresentante"
+                                    formControlName="apellidosrepresentante" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="direccionrepresentante">*Dirección: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="direccionrepresentante"
+                                    formControlName="direccionrepresentante" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="emailcorprepresentante">*Email Corpotativo: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="email" class="form-control input-request" name="emailcorprepresentante"
+                                    formControlName="emailcorprepresentante" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="telefonorepresentante">Teléfono: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="number" min="0" onkeydown="return event.keyCode !== 69"
+                                    class="form-control input-request" name="telefonorepresentante"
+                                    formControlName="telefonorepresentante">
+                            </div>
+                        </div>
+
+                        <div *ngIf="f.nombresrepresentante.value==''" class="alert alert-danger div-alert-error">
+                            Nombres del representante es requerido
+                        </div>
+
+                        <div *ngIf="f.apellidosrepresentante.value==''" class="alert alert-danger div-alert-error">
+                            Apellidos del representante es requerido.
+                        </div>
+
+                        <div *ngIf="f.direccionrepresentante.value==''" class="alert alert-danger div-alert-error">
+                            Dirección del representante es requerido.
+                        </div>
+
+                        <div *ngIf="f.emailcorprepresentante.value==''" class="alert alert-danger div-alert-error">
+                            Email del representante es requerido.
+                        </div>
+                        <!--
+                        <div *ngIf="f.telefonorepresentante.value==''" class="alert alert-danger div-alert-error">
+                            Teléfono del representante es requerido.
+                        </div>      
+                        -->
+
+                    </mat-expansion-panel>
+                    <mat-expansion-panel (click)="onChangePanel()">
+                        <mat-expansion-panel-header class="expansion-panel"
+                            (click)="mostrarMsgValidacion=false;mostrarMsgValidacionMarcas=false">
+                            <mat-panel-title class="label-header">
+                                Marcas
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-5">
+                                <label for="listaTiposCafe">*Tipo Programa: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <select formControlName="tipoprograma" (click)="mostrarMsgValidacionMarcas=false"
+                                    class="form-control select-request" required>
+                                    <option value="">--Seleccione--</option>
+                                    <option value="{{itemTipoPrograma.cdProgramType}}"
+                                        *ngFor="let itemTipoPrograma of listaTipoProgramas">
+                                        {{itemTipoPrograma.txDescription}} {{itemTipoPrograma.txRegion}}
+                                        <!--{{itemTipoPrograma.txRegion}}-->
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-5">
+                                <label for="tipoproducto">*Tipo Café: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <select formControlName="tipoproducto" (click)="mostrarMsgValidacionMarcas=false"
+                                    class="form-control select-request" required>
+                                    <option value="">--Seleccione--</option>
+                                    <option value="{{itemTipoProducto.cdProductType}}"
+                                        *ngFor="let itemTipoProducto of listaTipoProducto">
+                                        {{itemTipoProducto.txDescription}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!--
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-5">
+                                <label for="listaPlants">Planta: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <select formControlName="presentplant" (click)="mostrarMsgValidacionMarcas=false"
+                                    class="form-control select-request" required>
+                                    <option value="">--Seleccione--</option>
+                                    <option value="{{itemPresenProducto.cdPlant}}"
+                                        *ngFor="let itemPresenProducto of listaPlants">
+                                        {{itemPresenProducto.txDescription}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        -->
+                        
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-5">
+                                <label for="nombremarca">*Nombre Marca: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" (click)="mostrarMsgValidacionMarcas=false"
+                                    class="form-control select-request" name="nombremarca" formControlName="nombremarca"
+                                    value="{{objMarca?.txName}}" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-5">
+                                <label for="referencia">Planta: </label>
+
+                            </div>
+                            <div class="col-7 div-solicitud-input">
+                                <input type="text" (click)="mostrarMsgValidacionMarcas=false"
+                                    class="form-control select-request" name="presentplant" formControlName="presentplant"
+                                    value="{{objMarca?.cdPlant}}" >
+                            </div>
+
+                        </div>
+                        
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-5">
+                                <label for="referencia">Referencia: </label>
+
+                            </div>
+                            <div class="col-7 div-solicitud-input">
+                                <input type="text" (click)="mostrarMsgValidacionMarcas=false"
+                                    class="form-control select-request" name="referencia" formControlName="referencia"
+                                    value="{{objMarca?.txReference}}" required>
+                            </div>
+
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-5">
+                                <label for="nombremarca">Dueño café: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" (click)="mostrarMsgValidacionMarcas=false"
+                                    class="form-control select-request" name="duenyocafe" formControlName="duenyocafe"
+                                    value="{{objMarca?.txCoffeeOwner}}" required>
+                            </div>
+                        </div>
+
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-3">
+                                <label for="presentacionPro">Presentación: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="textarea" (click)="mostrarMsgValidacionMarcas=false"
+                                    class="form-control select-request" name="presentproducto"
+                                    formControlName="presentproducto" value="{{objMarca?.txPresentation}}" rows="2"
+                                    cols="50" required>
+                            </div>
+                        </div>
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-3">
+                                <label for="ciudadPro">Pais: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="textarea" (click)="mostrarMsgValidacionMarcas=false"
+                                    class="form-control select-request" name="country" formControlName="country"
+                                    value="{{objMarca?.country}}" rows="2" cols="50" required>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-11">
+
+                            </div>
+                            <div class="col-1">
+                                <div class="col-1 div-solicitud-input">
+                                    <button type="button" class="button-add-brand" (click)="onClickAdd()"> + </button>
+                                    <!-- formControlName="btnadicionar" -->
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div *ngIf="mostrarMsgValidacionMarcas" class="div-alert-error">
+                            Ya existe un registro con {{buscarTipoPrograma(f.tipoprograma.value).txDescription}},
+                            {{f.nombremarca.value}} y {{f.referencia.value}}
+                        </div>
+
+                        <div *ngIf="f.tipoprograma.invalid && mostrarMsgValidacion"
+                            class="alert alert-danger div-alert-error">
+                            <!-- submitted f.tiposcafe.invalid f.tiposcafe.touched -->
+                            <div *ngIf="f.tipoprograma.errors.required">Debe escoger un Tipo de Programa de la lista
+                            </div>
+                        </div>
+
+                        
+
+                        <div *ngIf="f.tipoproducto.invalid && mostrarMsgValidacion"
+                            class="alert alert-danger div-alert-error">
+                            <!-- submitted f.tiposcafe.invalid f.tiposcafe.touched -->
+                            <div *ngIf="f.tipoproducto.errors.required">Debe escoger un Tipo de Café de la lista</div>
+                        </div>
+
+                        <div *ngIf="f.nombremarca.invalid && mostrarMsgValidacion"
+                            class="alert alert-danger div-alert-error">
+                            <div *ngIf="f.nombremarca.errors.required">Nombre de marca es requerido.</div>
+                        </div>
+
+                        <!--
+                        <div *ngIf="f.presentplant.invalid && mostrarMsgValidacion"
+                            class="alert alert-danger div-alert-error">
+                            
+                            <div *ngIf="f.presentplant.errors.required">Debe escoger un Tipo de Planta de la lista</div>
+                        </div>
+
+                        <div *ngIf="f.presentproducto.invalid && mostrarMsgValidacion"
+                            class="alert alert-danger div-alert-error">
+                       
+                            <div *ngIf="f.presentproducto.errors.required">Nombre de la presentacion del producto es
+                                requerido.</div>
+                        </div>
+
+                        <div *ngIf="f.referencia.invalid && mostrarMsgValidacion"
+                            class="alert alert-danger div-alert-error">
+                            <div *ngIf="f.referencia.errors.required">Referencia es requerida.</div>
+                        </div>
+
+                        <div *ngIf="f.country.invalid && mostrarMsgValidacion"
+                            class="alert alert-danger div-alert-error">
+                            
+                            <div *ngIf="f.country.errors.required">Nombre del pais es requerido.</div>
+                        </div>
+
+                        <div *ngIf="f.duenyocafe.invalid && mostrarMsgValidacion"
+                            class="alert alert-danger div-alert-error">
+                           
+                            <div *ngIf="f.duenyocafe.errors.required">Nombre de Dueño del cafe es requerido.</div>
+                        </div>
+
+                        -->
+                        
+                        <div *ngIf="listaMarcas.length > 0">
+                            <hr class="horizontal-line">
+
+                            <div class="row d-flex justify-content-center">
+                                <table id="table-brands" class="table table-sm table-hover text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo Programa</th>
+                                            <th>Tipo Café</th>
+                                            <th>Nombre</th>
+                                            <th>Planta</th>
+                                            <th>Referencia</th>
+                                            <th>Presentación</th>
+                                            <th>Dueño Café</th>
+                                            <th>Pais</th>
+                                            <!-- <td scope="col">Fecha</td> -->
+                                            <th scope="col">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of listaMarcas">
+                                            <!-- <td>{{buscarTipoCafe(item.cdCoffeeType).txDescription}}</td> -->
+                                            <td>{{item.programTypeName}}</td>
+                                            <td>{{item.productTypeName}}</td>
+                                            <td>{{item.txName}}</td>
+                                            <td>{{item.txPlant}}</td>
+                                            <td>{{item.txReference}}</td>
+                                            <td>{{item.txPresentation}}</td>
+                                            <td>{{item.txCoffeeOwner}}</td>
+                                            <td>{{item.txCountry}}</td>
+                                            <td>
+                                                <button (click)="removeTrademark(item)" class="buttonTableCoffee">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel (click)="onChangePanel()">
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Soportes
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="adjuntarcorreo">Correo: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <div class="custom-file">
+                                    <input class="custom-file-input" type="file" formControlName="adjuntarcorreo"
+                                        required (change)="handleFileInput1($event.target.files)" multiple>
+                                    <label class="custom-file-label">{{fileToUpload1!=null?'Se ha adjuntado ' +
+                                        fileToUpload1.length + ' archivos':'Elegir multiples
+                                        archivos'}}</label>
+                                </div>
+                                <div *ngIf="fileToUpload1!=null">
+                                    <label *ngFor="let archivo1 of fileToUpload1; let indice=index"
+                                        class="col">{{archivo1.name}}<button type="button" class="btn btn-link"
+                                            style="color:#881010"
+                                            (click)="eliminarArchivo(indice,'fileToUpload1')">X</button></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="adjuntarsol">Solicitud PDF: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <div class="custom-file">
+                                    <input class="custom-file-input" type="file" formControlName="adjuntarsol" required
+                                        (change)="handleFileInput2($event.target.files)" multiple>
+                                    <label class="custom-file-label">{{fileToUpload2!=null?'Se ha adjuntado ' +
+                                        fileToUpload2.length + ' archivos':'Elegir multiples
+                                        archivos'}}</label>
+                                </div>
+                                <div *ngIf="fileToUpload2!=null">
+                                    <label *ngFor="let archivo2 of fileToUpload2; let indice=index"
+                                        class="col">{{archivo2.name}}<button type="button" class="btn btn-link"
+                                            style="color:#881010"
+                                            (click)="eliminarArchivo(indice,'fileToUpload2')">X</button></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="adjuntarcamara">Camara Comercio: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <div class="custom-file">
+                                    <input class="custom-file-input" type="file" formControlName="adjuntarcamara"
+                                        required (change)="handleFileInput3($event.target.files)" multiple>
+                                    <label class="custom-file-label">{{fileToUpload3!=null?'Se ha adjuntado ' +
+                                        fileToUpload3.length + ' archivos':'Elegir multiples
+                                        archivos'}}</label>
+                                </div>
+                                <div *ngIf="fileToUpload3!=null">
+                                    <label *ngFor="let archivo3 of fileToUpload3; let indice=index"
+                                        class="col">{{archivo3.name}}<button type="button" class="btn btn-link"
+                                            style="color:#881010"
+                                            (click)="eliminarArchivo(indice,'fileToUpload3')">X</button></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="adjuntarregtri">Registro Trillador: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <div class="custom-file">
+                                    <input class="custom-file-input" type="file"
+                                        (change)="handleFileInput4($event.target.files)" multiple>
+                                    <label class="custom-file-label">{{fileToUpload4!=null?'Se ha adjuntado ' +
+                                        fileToUpload4.length + ' archivos':'Elegir multiples
+                                        archivos'}}</label>
+                                </div>
+                                <div *ngIf="fileToUpload4!=null">
+                                    <label *ngFor="let archivo4 of fileToUpload4; let indice=index"
+                                        class="col">{{archivo4.name}}<button type="button" class="btn btn-link"
+                                            style="color:#881010"
+                                            (click)="eliminarArchivo(indice,'fileToUpload4')">X</button></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="adjuntarregtos">Registro Tostador: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <div class="custom-file">
+                                    <input class="custom-file-input" type="file"
+                                        (change)="handleFileInput5($event.target.files)" multiple>
+                                    <label class="custom-file-label">{{fileToUpload5!=null?'Se ha adjuntado ' +
+                                        fileToUpload5.length + ' archivos':'Elegir multiples
+                                        archivos'}}</label>
+                                </div>
+                                <div *ngIf="fileToUpload5!=null">
+                                    <label *ngFor="let archivo5 of fileToUpload5; let indice=index"
+                                        class="col">{{archivo5.name}}<button type="button" class="btn btn-link"
+                                            style="color:#881010"
+                                            (click)="eliminarArchivo(indice,'fileToUpload5')">X</button></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="adjuntarregsol">Registro Solubilizador: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <div class="custom-file">
+                                    <input class="custom-file-input" type="file"
+                                        (change)="handleFileInput6($event.target.files)" multiple>
+                                    <label class="custom-file-label">{{fileToUpload6!=null?'Se ha adjuntado ' +
+                                        fileToUpload6.length + ' archivos':'Elegir multiples
+                                        archivos'}}</label>
+                                </div>
+                                <div *ngIf="fileToUpload6!=null">
+                                    <label *ngFor="let archivo6 of fileToUpload6; let indice=index"
+                                        class="col">{{archivo6.name}}<button type="button" class="btn btn-link"
+                                            style="color:#881010"
+                                            (click)="eliminarArchivo(indice,'fileToUpload6')">X</button></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="adjuntarregprodext">Productor de Extracto: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <div class="custom-file">
+                                    <input class="custom-file-input" type="file"
+                                        (change)="handleFileInput7($event.target.files)" multiple>
+                                    <label class="custom-file-label">{{fileToUpload7!=null?'Se ha adjuntado ' +
+                                        fileToUpload7.length + ' archivos':'Elegir multiples
+                                        archivos'}}</label>
+                                </div>
+                                <div *ngIf="fileToUpload7!=null">
+                                    <label *ngFor="let archivo7 of fileToUpload7; let indice=index"
+                                        class="col">{{archivo7.name}}<button type="button" class="btn btn-link"
+                                            style="color:#881010"
+                                            (click)="eliminarArchivo(indice,'fileToUpload7')">X</button></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="adjuntarotro">Otro: </label>
+                            </div>
+                            <!--<div class="col div-solicitud-input">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" (change)="handleFileInput8($event.target.files)">
+                                    <label class="custom-file-label">{{fileToUpload8!=null?fileToUpload8.name:'Elegir
+                                        archivo'}} </label>
+                                </div>
+                            </div>-->
+                            <div class="col div-solicitud-input">
+                                <div class="custom-file">
+                                    <input class="custom-file-input" type="file"
+                                        (change)="handleFileInput8($event.target.files)" multiple>
+                                    <label class="custom-file-label">{{fileToUpload8!=null?'Se ha adjuntado ' +
+                                        fileToUpload8.length + ' archivos':'Elegir multiples
+                                        archivos'}}</label>
+                                </div>
+                                <div *ngIf="fileToUpload8!=null">
+                                    <label *ngFor="let archivo of fileToUpload8; let indice=index"
+                                        class="col">{{archivo.name}}<button type="button" class="btn btn-link"
+                                            style="color:#881010"
+                                            (click)="eliminarArchivo(indice,'fileToUpload8')">X</button></label>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel (click)="onChangePanel()">
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Facturación
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="numfactura">Número Factura: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="numfactura"
+                                    formControlName="numfactura">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="fechafactura">Fecha Factura </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="date" class="form-control input-request" formControlName="fechafactura"
+                                    id="fechafactura" name="fechafactura" >
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel (click)="onChangePanel()">
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Información Adicional
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="fechaenviocorreo">Fecha Envío Correo Inicial: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="date" class="form-control input-request" formControlName="fechaenviocorreo"
+                                    id="fechaenviocorreo" name="fechaenviocorreo" >
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="fechafirmacuerdo">Fecha Firma Acuerdo: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="date" class="form-control input-request" formControlName="fechafirmacuerdo"
+                                    id="fechafirmacuerdo" name="fechafirmacuerdo" >
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="fechacartacompromiso">Fecha Carta Compromiso: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="date" class="form-control input-request"
+                                    formControlName="fechacartacompromiso" id="fechacartacompromiso"
+                                    name="fechacartacompromiso" >
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel (click)="onChangePanel()">
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Registro FNC
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="regtrilladora">Número Registro Trilladora: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" min="0" onkeydown="return event.keyCode !== 69" name="regtrilladora"
+                                    class="form-control input-request" formControlName="regtrilladora">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="regtostadora">Número Registro Tostadora: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" min="0" onkeydown="return event.keyCode !== 69" name="regtostadora"
+                                    class="form-control input-request" formControlName="regtostadora">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="regsolubilizador">Número Registro Solubilizador: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" min="0" onkeydown="return event.keyCode !== 69"
+                                    name="regsolubilizador" class="form-control input-request"
+                                    formControlName="regsolubilizador">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="regprodextracto">Número Registro Productor de Extracto: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" min="0" onkeydown="return event.keyCode !== 69"
+                                    name="regprodextracto" class="form-control input-request"
+                                    formControlName="regprodextracto">
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>*Motivo Modificación:</label>
+                            <textarea required formControlName="modificarsolicitud" class="form-control"
+                                rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="f.modificarsolicitud.invalid" class="alert alert-danger div-alert-error">
+                    <div *ngIf="f.modificarsolicitud.errors.required">El motivo de modificación es obligatorio</div>
+                </div>
+                <div class="row div-solicitud-form">
+                    <div class="col">
+                        <button class="btn float-right button-save-request" type="button"
+                            (click)="onClickSavePerformed()" [disabled]="!isFormValid()">Modificar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

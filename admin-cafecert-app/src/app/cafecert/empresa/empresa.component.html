@@ -1,0 +1,47 @@
+﻿<app-menu></app-menu>
+
+<div style="background-color: white;padding: 30px;">
+    <div class="table-responsive-xl" >
+        
+        <table class="table table-sm  table-hover">
+            <thead >
+                <tr>
+                    <td ></td>
+                    <td scope="col" colspan="2">Lista de Empresas</td>
+                    
+                </tr>
+                <tr>
+                    <td scope="col">Cliente</td>
+                    <td scope="col">Nombre</td>
+                    <td scope="col">Nit</td>
+                    <td scope="col">Pbx</td>
+                    <td scope="col">Teléfono</td>
+                    <th scope="col">Móvil</th>
+                    <td scope="col">Correo Electrónico</td>
+                    <td scope="col">Dirección</td>
+                    <td scope="col">Dirección de Correo</td>
+                    <td scope="col">Sitio Web</td>
+                    <td scope="col">Postal</td>
+                    <td scope="col">Ciudad</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of lista">
+                    <td>{{item.cdClient}}</td>
+                    <td>{{item.txName}}</td>
+                    <td>{{item.txNit}}</td>
+                    <td>{{item.txPbx}}</td>
+                    <td>{{item.txPhone}}</td>
+                    <th scope="row">{{item.txMobile}}</th>
+                    <td>{{item.txEmail}}</td>
+                    <td>{{item.txAddress}}</td>
+                    <td>{{item.txMailAddress}}</td>
+                    <td>{{item.txWeb}}</td>
+                    <td>{{item.txMgrReceiveInvoice}}</td>
+                    <td>{{item.cdCity}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<router-outlet></router-outlet>

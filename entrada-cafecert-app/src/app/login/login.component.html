@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cafecert - Inicio de sesi&oacute;n</title>
+</head>
+<div class="login-container">
+    <form class="form-group" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="login-container-form">
+            <div class="row">
+                <div class="col">
+                    <label class="label-login">Ingresa tu usuario</label>
+                    <input type="text" formControlName="username" class="form-control" placeholder="Usuario"
+                        [ngClass]="{ 'is-invalid': submitted && f.username.errors }">
+                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                        <div *ngIf="f.username.errors.required">Credencial p&uacute;blica es requerida</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="label-login">Ingresa tu contraseña</label>
+                <input type="password" formControlName="password" required class="form-control" placeholder="Contraseña"
+                    [ngClass]="{ 'is-invalid': submitted && f.password.errors}">
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Credencial privada es requerida</div>
+                    <div *ngIf="f.password.errors.minlength">Por favor verifique los datos ingresados, la nueva
+                        contrase&ntilde;a
+                        debe tener una longitud m&iacute;nima de 8 caracteres.</div>
+                    <div *ngIf="f.password.errors.maxlength">Por favor verifique los datos ingresados, la nueva
+                        contrase&ntilde;a
+                        debe tener una longitud m&acute;xima de 20 caracteres.</div>
+                    <!--<div *ngIf="f.password.errors.pattern">Por favor verifique los datos ingresados, la
+                        contrase&ntilde;a
+                        debe contener letras, n&uacute;meros y un como m&iacute;nimo un sibolo como [!#$%&/()=?'¡¿*/.].
+                    </div>-->
+                </div>
+            </div>
+
+            <button [disabled]="loading" class="btn btn-block btn-login">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                INGRESAR
+            </button>
+        </div>
+
+        <hr class="horizontal-line" />
+        
+        <div class="login-container-backup">
+            <button title="Recuperar clave" class="btn button-manage" (click)="recuperrarclave()">
+                <label class="label-login" style="cursor: pointer">Recuperar contraseña</label>
+            </button>
+
+        </div>
+    </form>
+
+</div>
+<router-outlet></router-outlet>
+
+</html>
+<!-- 
+
+<div style="background-color: white;padding: 30px;">
+    <p style="font-family:Verdana, Geneva, Tahoma, sans-serif;font-size: x-large;cursor: context-menu;">Validar
+        credenciales
+        en Cafecert</p>
+
+    <form>
+        <mat-form-field style="width:100%">
+            <input matInput placeholder="Usuario">
+        </mat-form-field>
+
+        <mat-form-field style="width:100%">
+            <input type="password" matInput placeholder="Contraseña">
+        </mat-form-field>
+
+    </form>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <input type="text" formControlName="username" placeholder="Digite aquí su credencial pública" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+            <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                <div *ngIf="f.username.errors.required">Credencial p&uacute;blica es requerida</div>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="password" formControlName="password" minlength="8" required pattern="^[a-zA-Z1-9!#$%&\()=?¡'¿/*.]+$"
+                placeholder="Digite aquí su credencial privada" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors}" />
+            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                <div *ngIf="f.password.errors.required">Credencial privada es requerida</div>
+                <div *ngIf="f.password.errors.minlength">Por favor verifique los datos ingresados, la nueva
+                    contrase&ntilde;a
+                    debe tener una longitud m&iacute;nima de 8 caracteres.</div>
+                <div *ngIf="f.password.errors.maxlength">Por favor verifique los datos ingresados, la nueva
+                    contrase&ntilde;a
+                    debe tener una longitud m&acute;xima de 20 caracteres.</div>
+                <div *ngIf="f.password.errors.pattern">Por favor verifique los datos ingresados, la contrase&ntilde;a
+                    debe contener letras, n&uacute;meros y un como m&iacute;nimo un sibolo como [!#$%&/()=?'¡¿*/.].</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button [disabled]="loading" class="btn btn-primary">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Validar credenciales
+            </button>
+            <br />
+            <a routerLink="/changepassword" class="btn btn-link">¿Cambiar su contrase&ntilde;a?</a>
+        </div>
+    </form>
+</div> -->

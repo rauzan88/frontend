@@ -1,0 +1,25 @@
+﻿<div style="padding: 30px;">
+  <div style="text-align: right;">
+    <button type="button" class="btn btn-link" style="color:black" (click)="regresarLista()">Regresar a la
+      lista</button>
+  </div>
+  <div class="row">
+    <h4 style="color: darkmagenta;align-items: center;">Detalle</h4>
+  </div>
+  <div class="row" style="background-color: white">
+    <div class="col-xs-12 col-sm-4" style="align-items: center;">
+      <h5>Evento actual</h5>
+      <app-eventoactual></app-eventoactual>
+    </div>
+    <div class="col-xs-12 col-sm-8" style="align-items: center;">
+      <h5>Validaciones</h5>
+      <app-controlevento></app-controlevento>
+    </div>
+  </div>
+  <app-cadenaevento></app-cadenaevento>
+  <app-procesaevento></app-procesaevento>
+  <app-noconformidad></app-noconformidad>
+</div>
+<router-outlet></router-outlet>
+
+<!-- <router-outlet></router-outlet> -->

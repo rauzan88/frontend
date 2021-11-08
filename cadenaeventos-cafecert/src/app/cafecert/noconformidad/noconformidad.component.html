@@ -1,0 +1,8 @@
+﻿<div class="table-responsive-xl">
+  <h6 *ngIf = " (lista | json) == '[]' ">No se encontraron flujos alternos en el sistema</h6>
+  <div *ngIf = " (lista | json) != '[]' " >
+    <button *ngFor = "let item of lista" type="button" class="btn btn-link"
+       (click)="validarRespuestas(item)">{{item.txObservation}}</button>
+  </div>
+</div>
+<router-outlet></router-outlet>

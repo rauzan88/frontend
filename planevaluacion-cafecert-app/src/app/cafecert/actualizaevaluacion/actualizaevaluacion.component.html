@@ -1,0 +1,81 @@
+﻿<div class="container">
+    <button type="button" class="btn btn-link" style="color:black" (click)="regresarLista()">Regresar a la
+        lista</button>
+    <form class="form-group" [formGroup]="edicionForm">
+        
+
+        <div >
+
+            <div class="row">
+                <!-- txCodRequest -->
+                <label for="txCodRequest">*Numero solicitud: </label>
+                <div>
+                    <input type="text"  formControlName="txCodRequest"
+                        value="{{objCliente?.txCodRequest}}" class="form-control" required>
+                    <div *ngIf="f.txCodRequest.invalid && f.txCodRequest.touched" class="alert alert-danger">
+                        <div *ngIf="f.txCodRequest.errors.required">Codigo solicitud es requerido.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- dtApplication -->
+                <label for="dtApplication">*Fecha solicitud: </label>
+                <div>
+                    <input type="date"  formControlName="dtApplication" 
+                        value="{{objCliente?.dtApplication}}" class="form-control" required>
+                    <div *ngIf="f.dtApplication.invalid && f.dtApplication.touched" class="alert alert-danger">
+                        <div *ngIf="f.dtApplication.errors.required">Fecha solicitud es requerida.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div  *ngFor="let item of lista">
+                <div >
+                    <label >{{item.laboratoryName}}</label>
+                </div>
+               
+                <div  class="row">
+                    <label for="{{item.cdLaboratory}}">*Aplica ?: </label>
+                    <div class="form-goup">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" value="S" name="{{item.cdLaboratory}}" id="{{item.cdLaboratory}}1" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="item.txAnswer"  mdbInput>
+                            <label class="custom-control-label" for="{{item.cdLaboratory}}1" >Si</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" value="N" name="{{item.cdLaboratory}}" id="{{item.cdLaboratory}}2" [ngModelOptions]="{standalone: true}"
+                                [(ngModel)]="item.txAnswer"  mdbInput>
+                            <label class="custom-control-label" for="{{item.cdLaboratory}}2" >No</label>
+                        </div>
+                        <div class="alert alert-danger" *ngIf="item.messageradio != null">{{item.messageradio}}</div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <label>*Cantidad de ensayos: </label>
+                    <div >
+                        <input [(ngModel)]="item.nuEssay" [ngModelOptions]="{standalone: true}" >
+                        <div class="alert alert-danger" *ngIf="item.messageessay != null">{{item.messageessay}}</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <button  class="btn btn-primary btn-login" (click)="validarRespuestas(lista)">
+                Guardar plan evaluacion
+            </button>
+
+
+
+            
+        </div>
+
+
+    </form>
+
+</div>
+
+
+<router-outlet></router-outlet>

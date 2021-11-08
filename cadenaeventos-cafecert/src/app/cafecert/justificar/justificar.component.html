@@ -1,0 +1,25 @@
+﻿
+<form class="form-group" [formGroup]="justifForm" (ngSubmit)="onSubmit()">
+  <div class="div-gestion-form-file">
+    <div class="form-goup div-gestion-form">
+      <label class="label-observacion">Observaciones</label>
+    </div>
+    <textarea formControlName="observacion" cols="40" rows="3" class="form-control" required></textarea>
+  </div>
+  <div *ngIf="submitted && f.observacion.errors" class="invalid-feedback">
+    <div *ngIf="f.observacion.errors.required">Observacion es requerida</div>
+  </div>
+  <div>
+    <!--<button type="button" class="btn btn-outline-success navbar-toggler-right btn-primary"
+      style="border-color: blue;color:black" (click)="regresarflujo()">Seguir en flujo normal</button>
+    -->
+    <div *ngIf=" (lista | json) != '[]' ">
+      <button *ngFor="let item of lista" type="button" class="btn float-right button-save-request"
+        (click)="iraflujonuevo(item)">{{item.txObservation}}</button>
+    </div>
+
+  </div>
+
+</form>
+
+<router-outlet></router-outlet>

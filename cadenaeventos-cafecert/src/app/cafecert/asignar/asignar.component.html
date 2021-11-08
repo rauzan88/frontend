@@ -1,0 +1,135 @@
+﻿<!-- 
+<div class="container">
+    <div class="row" style="color: steelblue">
+        <h4>Asignar Solicitud a un Usuario</h4>
+    </div>
+
+    <div class="row" style="background-color: white">
+        <div class="col-xs-12 col-sm-8">
+            <form [formGroup]="homeForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="listaUsuariosDesplegable">Lista de Usuarios</label>
+                    <select formControlName="listaUsuariosDesplegable" class="form-control"
+                        style="border-color: steelblue;color: steelblue">
+                        <option value="{{ usuario.id}}" *ngFor="let usuario of listaUsuarios">{{usuario.name}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="listaTiposDesplegable">Tipos de Solicitudes</label>
+                    <select formControlName="listaTiposDesplegable" class="form-control"
+                        style="border-color: steelblue;color: steelblue">
+                        <option value="{{ tipoSolicitud.cdTypeRequest}}" *ngFor="let tipoSolicitud of listaTipos">{{tipoSolicitud.txDescription}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.listaTiposDesplegable.errors" class="invalid-feedback">
+                        <div *ngIf="f.listaTiposDesplegable.errors.required">Debe escoger un tipo de solicitud de la lista</div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="padding: 5px">
+                    <label for="actividades01">Actividades</label>
+                    <div>
+                        <button type="button" class="btn btn-outline-warning navbar-toggler-right btn-block"
+                            style="border-color: steelblue;color: steelblue"
+                            (click)="onClickActivityPerformed()"
+                            >Asignar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> -->
+<!-- <div class="d-flex justify-content-center" style="margin-bottom: 20px">
+    <h5 style="color:#881010"><b>Asignar Solicitud</b></h5>
+</div> -->
+
+<div class="d-flex justify-content-center">
+    <div class="return-link">
+        <button type="button" class="btn btn-link" style="color:#881010" (click)="goBackRequestList()">
+            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+            Regresar
+        </button>
+    </div>
+    <label style="font-family: Verdana, sans-serif;font-size: 20px;color:#881010">Asignar Solicitud</label>
+</div>
+
+
+<form [formGroup]="requestForm">
+    <div class="row">
+        <div class="col">
+            <div class="login-container-form">
+                <!-- txRequestCode -->
+                <div class="row div-solicitud-form div-solicitud-form-label">
+                    <div class="col">
+                        <label>Código de Solicitud: </label>
+                    </div>
+                    <div class="col div-solicitud-input">
+                        <input type="text" [value]="codrequest" class="form-control input-request" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="login-container-form">
+                <!-- txRequestCode -->
+                <div class="row div-solicitud-form div-solicitud-form-label">
+                    <div class="col">
+                        <label>Tipo de solicitud: </label>
+                    </div>
+                    <div class="col div-solicitud-input">
+                        <input type="text" [value]="typerequest" class="form-control input-request" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="login-container-form">
+                <!-- txRequestCode -->
+                <div class="row div-solicitud-form div-solicitud-form-label">
+                    <div class="col">
+                        <label>Fecha de Solicitud: </label>
+                    </div>
+                    <div class="col div-solicitud-input">
+                        <input type="text" [value]="creationrequest | date: 'dd/MM/yyyy'" date="dd/mm/yyyy" class="form-control input-request"
+                            readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="login-container-form">
+                <!-- txRequestCode -->
+                <div class="row div-solicitud-form div-solicitud-form-label">
+                    <div class="col">
+                        <label>Nit: </label>
+                    </div>
+                    <div class="col div-solicitud-input">
+                        <input type="text" [value]="nit" class="form-control input-request" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="login-container-form">
+                <!-- txRequestCode -->
+                <div class="row div-solicitud-form div-solicitud-form-label">
+                    <div class="col">
+                        <label>Nombre del cliente: </label>
+                    </div>
+                    <div class="col div-solicitud-input">
+                        <input type="text" [value]="company" class="form-control input-request" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="login-container-form">
+                <div class="row div-solicitud-form div-solicitud-form-label">
+                    <div class="col" style="margin-top: auto;">
+                        <label>Asignar a:</label>
+                    </div>
+                    <div class="col d-flex justify-content-center div-solicitud-input">
+                        <select formControlName="user" class="form-control input-request">
+                            <option value="">Seleccionar analista...</option>
+                            <option value="{{usuario.id}}" *ngFor="let usuario of listaUsuarios">{{usuario.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 50px; display: flex; justify-content: flex-end">
+        <button [ngStyle]="{'background-color': requestForm.valid? '#881010': '#d7d7e6', 'color': requestForm.valid? 'white': 'gray'}"
+            [disabled]="!requestForm.valid" type="button" class="btn" (click)="asignarSolicitud()">Guardar</button>
+    </div>
+</form>

@@ -1,0 +1,574 @@
+﻿<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="return-link">
+            <button type="button" class="btn btn-link" style="color:#881010" (click)="goBackRequestList()">
+                <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                Regresar
+            </button>
+        </div>
+        <label style="font-family: Verdana, sans-serif;font-size: 20px;color:#881010">Consultar Solicitud</label>
+    </div>
+
+    <div>
+        <div>
+            <form class="form-group" [formGroup]="viewRequestForm" enctype="multipart/form-data">
+                <mat-accordion>
+                    <mat-expansion-panel [expanded]="true">
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Programa de Certificación
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="codigosolicitud">Código de Solicitud:</label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" formControlName="codigosolicitud">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col-6 div-solicitud-form-label">
+                                <label for="pregunta1">Tipo de Certificación:</label>
+                            </div>
+                            <div class="col-6 div-solicitud-input column-checkbox">
+                                <div class="form-check" *ngFor="let certificationType of listaTiposCert">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" formControlName="rbtipocertificacion"
+                                            name="rbtipocertificacion" value="{{certificationType.cdCertificationType}}"
+                                            [checked]="certificationType.check" />
+                                        {{certificationType.txDescription}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="fechasolicitud">Fecha Solicitud</label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="date" class="form-control input-date-request" formControlName="fechasolicitud"
+                                    id="fechasolicitud" name="fechasolicitud" min="2020-05-01" max="2020-12-31">
+                            </div>
+                        </div>
+
+                        <div [style.display]="isCertificationCodeVisible ? 'block' : 'none'">
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="codigocertificado">Código de Certificado Vigente:</label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="text" class="form-control input-request" formControlName="codigocertificado">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col div-solicitud-form-label">
+                                <label for="listaPaises">País de Certificación</label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <select formControlName="itemPaises" class="form-control select-request">
+                                    <option value="">--Seleccione--</option>
+                                    <option value="{{pais.cdCountry}}" *ngFor="let pais of listaPaises">{{pais.txNameCountry}}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label" id="programacertificacion" title="Programa">
+                            <div class="col div-solicitud-form-label">
+                                <label for="rbtipoprograma">Programa:</label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <div class="form-check" *ngFor="let programa of listaProgramas">
+                                    <label class="form-check-label label-checkbox">
+                                        <input type="checkbox" class="form-check-input" name="rbtipoprograma"
+                                            formControlName="rbtipoprograma" value="{{programa.id}}" [checked]="programa.check" />
+                                        <span class="checkmark"></span>
+                                        {{programa.text}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div [style.display]="isProgramaDor ? 'block' : 'none'">
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col div-solicitud-form-label">
+                                    <label for="rbtipoprograma">Programa DOR:</label>
+                                </div>
+                                <div class="col div-solicitud-input column-checkbox">
+                                    <div class="form-check" *ngFor="let programa of listaProgramasDOR">
+                                        <label class="form-check-label label-checkbox">
+                                            <input type="checkbox" class="form-check-input" name="rbtipoprogramaDOR"
+                                                value="{{programa.cdRegion}}" formControlName="programador" [checked]="programa.check" />
+                                            <span class="checkmark"></span>
+                                            {{programa.txDescription}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Información Cliente
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="nitcliente">Nit:</label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="number" placeholder="Nit del cliente" formControlName="nitcliente" class="form-control input-request"
+                                    [readonly]="isClientVisible">
+                            </div>
+                        </div>
+                        <div class="rows" [style.display]="isClientVisible ? 'block' : 'none'">
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="nombreempresa">Nombre de la Empresa: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input class="form-control input-request" type="text" name="nombreempresa"
+                                        formControlName="nombreempresa">
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="actividadindustrial">
+                                        Actividad Industrial:
+                                    </label>
+                                </div>
+                                <div class="col div-solicitud-input column-checkbox">
+                                    <div class="form-check" *ngFor="let actividadindustrial of listaActividadesIndustriales">
+                                        <label class="form-check-label label-checkbox">
+                                            <input type="checkbox" class="form-check-input" name="cbactividadindustrial"
+                                                formControlName="cbactividadindustrial" value="{{actividadindustrial.cdIndustrialActivity}}"
+                                                [checked]="actividadindustrial.check" />
+                                            <span class="checkmark"></span>
+                                            {{actividadindustrial.txNameActivity}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="listaPaisesCliente">País: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <select formControlName="paises" class="form-control select-request">
+                                        <option value="">--Seleccione--</option>
+                                        <option value="{{pais.cdCountry}}" *ngFor="let pais of listaPaisesCliente">{{pais.txNameCountry}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="listaDepartamentos">Departamento: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <select formControlName="departamentos" class="form-control select-request">
+                                        <option value="">--Seleccione--</option>
+                                        <option value="{{departamento.cdState}}" *ngFor="let departamento of listaDepartamentos">{{departamento.txNameState}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="listaCiudades">Ciudad: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <select formControlName="ciudades" class="form-control select-request">
+                                        <option value="">--Seleccione--</option>
+                                        <option value="{{ciudad.cdCity}}" *ngFor="let ciudad of listaCiudades">{{ciudad.txNameCity}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="direccionempresa">Dirección de la Empresa: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="text" name="direccionempresa" class="form-control input-request"
+                                        formControlName="direccionempresa" (keyup)="onKeyUpSame(1)">
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="direccioncorrespondencia">Dirección Correspondencia: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <label for="preguntadireccion">Misma dirección de la empresa: </label>
+                                        </div>
+                                        <div class="col-5 column-checkbox">
+                                            <div class="form-check" *ngFor="let respuesta of listaRespuestaMismaDir">
+                                                <label class="form-check-label">
+                                                    <input type="radio" class="form-check-input" name="preguntadireccion"
+                                                        formControlName="preguntadireccion" value="{{respuesta.text}}"
+                                                        [checked]="respuesta.check" />
+                                                    {{respuesta.text}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="text" class="form-control input-request" name="direccioncorrespondencia"
+                                                formControlName="direccioncorrespondencia">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="numerofijo">Número Fijo: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <input type="tel" class="form-control input-request" style="padding: .375rem .34rem"
+                                                name="prefijo" formControlName="prefijo">
+                                        </div>
+                                        <div class="col-2">
+                                            <input type="tel" class="form-control input-request" name="indicativo"
+                                                formControlName="indicativo">
+                                        </div>
+                                        <div class="col-7">
+                                            <input type="tel" class="form-control input-request" name="numerofijo"
+                                                formControlName="numerofijo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="celular">Celular: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="tel" name="celular" class="form-control input-request" formControlName="celular">
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="email">E-mail Corporativo: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="email" name="email" class="form-control input-request" formControlName="email">
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="emailnotificacionjudicial">Notificación Judicial (inscrito en Cámara
+                                        de
+                                        Comercio):
+                                    </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="email" name="emailnotificacionjudicial" class="form-control input-request"
+                                        formControlName="emailnotificacionjudicial">
+                                </div>
+                            </div>
+
+                            <div class="row div-solicitud-form div-solicitud-form-label">
+                                <div class="col">
+                                    <label for="website">Dirección Página Web: </label>
+                                </div>
+                                <div class="col div-solicitud-input">
+                                    <input type="url" name="website" class="form-control input-request" formControlName="website">
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Contacto Principal
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="nombrescontacto">Nombre(s): </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="nombrescontacto"
+                                    formControlName="nombrescontacto" (keyup)="onKeyUpSame(2)">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="apellidoscontacto">Apellido(s): </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="apellidoscontacto"
+                                    formControlName="apellidoscontacto" (keyup)="onKeyUpSame(3)">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="direccioncontacto">Dirección: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="direccioncontacto"
+                                    formControlName="direccioncontacto" (keyup)="onKeyUpSame(4)">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="cargocontacto">Cargo: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="cargocontacto"
+                                    formControlName="cargocontacto">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="emailcorpcontacto">Email Corpotativo: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="email" class="form-control input-request" name="emailcorpcontacto"
+                                    formControlName="emailcorpcontacto" (keyup)="onKeyUpSame(5)">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="telefonocontacto">Teléfono: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="number" class="form-control input-request" name="telefonocontacto"
+                                    formControlName="telefonocontacto" (keyup)="onKeyUpSame(6)">
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Representante Legal
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row div-solicitud-form">
+                            <div class="col">
+                                <label for="preguntamismocontacto">Mismo Contacto Principal: </label>
+                            </div>
+                            <div class="col column-checkbox">
+                                <div class="form-check" *ngFor="let respuesta of listaRespuestaMismoContacto">
+                                    <label class="form-check-label">
+                                        <input type="radio" class="form-check-input" name="preguntamismocontacto"
+                                            formControlName="preguntamismocontacto" value="{{respuesta.text}}"
+                                            [checked]="respuesta.check" />
+                                        {{respuesta.text}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="nombresrepresentante">Nombre(s): </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="nombresrepresentante"
+                                    formControlName="nombresrepresentante">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="apellidosrepresentante">Apellido(s): </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="apellidosrepresentante"
+                                    formControlName="apellidosrepresentante">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="direccionrepresentante">Dirección: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="direccionrepresentante"
+                                    formControlName="direccionrepresentante">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="emailcorprepresentante">Email Corpotativo: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="email" class="form-control input-request" name="emailcorprepresentante"
+                                    formControlName="emailcorprepresentante">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="telefonorepresentante">Teléfono: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="number" class="form-control input-request" name="telefonorepresentante"
+                                    formControlName="telefonorepresentante">
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel *ngIf="listaMarcas.length > 0">
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Marcas
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div>
+                            <div class="row d-flex justify-content-center">
+                                <table id="table-brands" class="table table-sm table-hover text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Tipo Café</th>
+                                            <th>Nombre</th>
+                                            <th>Referencia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of listaMarcas">
+                                            <td>{{item.txDescription}}</td>
+                                            <td>{{item.txName}}</td>
+                                            <td>{{item.txReference}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Facturación
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="numfactura">Número Factura: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" class="form-control input-request" name="numfactura" formControlName="numfactura">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="fechafactura">Fecha Factura </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="date" class="form-control input-request" formControlName="fechafactura" id="fechafactura"
+                                    name="fechafactura" min="2020-05-01" max="2020-12-31">
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Información Adicional
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="fechaenviocorreo">Fecha Envío Correo Inicial: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="date" class="form-control input-request" formControlName="fechaenviocorreo"
+                                    id="fechaenviocorreo" name="fechaenviocorreo" min="2020-05-01" max="2020-12-31">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="fechafirmacuerdo">Fecha Firma Acuerdo: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="date" class="form-control input-request" formControlName="fechafirmacuerdo"
+                                    id="fechafirmacuerdo" name="fechafirmacuerdo" min="2020-05-01" max="2020-12-31">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="fechacartacompromiso">Fecha Carta Compromiso: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="date" class="form-control input-request" formControlName="fechacartacompromiso"
+                                    id="fechacartacompromiso" name="fechacartacompromiso" min="2020-05-01" max="2020-12-31">
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header class="expansion-panel">
+                            <mat-panel-title class="label-header">
+                                Registro FNC
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="regtrilladora">Número Registro Trilladora: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" name="regtrilladora" class="form-control input-request"
+                                    formControlName="regtrilladora">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="regtostadora">Número Registro Tostadora: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" name="regtostadora" class="form-control input-request"
+                                    formControlName="regtostadora">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="regsolubilizador">Número Registro Solubilizador: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" name="regsolubilizador" class="form-control input-request"
+                                    formControlName="regsolubilizador">
+                            </div>
+                        </div>
+
+                        <div class="row div-solicitud-form div-solicitud-form-label">
+                            <div class="col">
+                                <label for="regprodextracto">Número Registro Productor de Extracto: </label>
+                            </div>
+                            <div class="col div-solicitud-input">
+                                <input type="text" name="regprodextracto" class="form-control input-request"
+                                    formControlName="regprodextracto">
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </form>
+        </div>
+    </div>
+</div>

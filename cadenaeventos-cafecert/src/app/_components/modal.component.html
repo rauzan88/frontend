@@ -1,0 +1,17 @@
+<div>
+    <div mat-dialog-title class="row d-flex justify-content-center">
+        <h3 style="color: white">{{data.message}}</h3>
+    </div>
+    <hr>
+    <mat-dialog-content>
+        <div style="max-width: 500px;" class="text-center">
+            <p style="color: white">{{data.content}}</p>
+        </div>
+    </mat-dialog-content>
+    <hr>
+    <mat-dialog-actions class="d-flex justify-content-center">
+        <div class="row">
+            <button class="btn button-save-request" [mat-dialog-close]="true">Aceptar</button>
+        </div>
+    </mat-dialog-actions>
+</div>

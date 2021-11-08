@@ -1,0 +1,56 @@
+p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    font-weight: 300;
+    line-height: 1.7em;
+    color: #999;
+}
+
+
+.table-header {
+    background-color: #881010; 
+    color: white;
+  }
+  
+  .table-row.pair{
+    background-color: white;
+  }
+  
+  .table-row.odd{
+    background-color: rgb(247, 225, 203);
+  }
+  
+  .table-row.pair:hover{
+    background-color: #da9292;
+  }
+  
+  .table-row.odd:hover{
+    background-color: #da9292;
+  }
+  
+  .button-manage {
+    border-radius: 50px;
+    background-color: transparent;
+  }
+  
+  .pagination-pages {
+    background-color: #da9292; 
+    border-color: #881010
+  }
+  
+  .pagination-pages:hover {
+    background-color: #da9292; 
+    border-color: #881010
+  }
+  
+  .active-pagination{
+    background-color: #881010; 
+  }
+  
+  .active-pagination:hover{
+    background-color: #881010; 
+  }
+  
+  #tabla-solicitud th{
+    vertical-align: middle;
+  }

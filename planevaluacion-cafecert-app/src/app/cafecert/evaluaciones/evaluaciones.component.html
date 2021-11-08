@@ -1,0 +1,42 @@
+﻿<div style="background-color:  white;padding: 30px;">
+    <div style="text-align: right;">
+        <button type="button" class="btn btn-link" style="color:black" (click)="crearevaluacion()">Nuevo
+            plan de evaluacion</button>
+    </div>
+    <div class="table-responsive-xl">
+        <table class="table table-sm  table-hover">
+            <thead>
+                <tr>
+                    <td></td>
+                    <td scope="col" colspan="3">Lista de planes de evaluacion</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td scope="col">Numero solicitud </td>
+                    <td scope="col">Fecha Solicitud</td>
+                    <td scope="col">Laboratorio</td>
+                    <td scope="col">Respuesta</td>
+                    <td scope="col">Cantidad ensayos</td>
+                    <th scope="col">Usuario</th>
+                    <td scope="col">Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of lista">
+                    <td>{{item.txCodRequest}}</td>
+                    <td>{{item.dtApplication | date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.laboratoryName}}</td>
+                    <td>{{item.txAnswer}}</td>
+                    <td>{{item.nuEssay}}</td>
+                    <th scope="row">{{item.txCreationUser}}</th>
+                    <td>
+                        <button type="button" title="Actualizar plan evaluacion" class="btn button-manage"
+                            (click)="iraeditarevaluacion(item)">editar
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<router-outlet></router-outlet>

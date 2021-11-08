@@ -1,0 +1,39 @@
+﻿
+<div class="container">
+    <div class="row" style="color: steelblue">
+        <h4>Cambiar Cadena de Evento a Solicitud</h4>
+    </div>
+
+    <div class="row" style="background-color: white">
+        <div class="col-xs-12 col-sm-4">
+            <li id="cuarta"></li>
+        </div>
+        <div class="col-xs-12 col-sm-8">
+            <form [formGroup]="homeForm" (ngSubmit)="onSubmit()">
+                <div style="text-align: right">
+                    <a routerLink="/coffewelfare" class="btn btn-link navbar-toggler-right">Menu principal</a>
+                </div>
+
+                <div class="form-group">
+                    <label for="listaCadenasEventosDesplegable">Lista de Cadenas</label>
+                    <select formControlName="itemEvenChain" class="form-control"
+                        style="border-color: steelblue;color: steelblue">
+                        <option value="{{eventchain.nextEventChain}}" *ngFor="let eventchain of listaCadenasEventos">{{eventchain.txDescription}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="padding: 5px">
+                    <label for="actividades01">Actividades</label>
+                    <div>
+                        <button type="button" class="btn btn-outline-warning navbar-toggler-right btn-block"
+                            style="border-color: steelblue;color: steelblue"
+                            (click)="onClickActivityPerformed()"
+                            >Cambiar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

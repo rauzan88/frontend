@@ -1,0 +1,58 @@
+﻿<form enctype="multipart/form-data">
+    <div style="background-color:  white;padding: 30px;">
+        <div class="table-responsive-xl">
+            <h6 *ngIf=" (lista | json) === '[]' ">No se encontraron preguntas parametrizadas en el sistema</h6>
+            <div style="text-align: right;">
+                <button type="button" class="btn btn-link" style="color:black" (click)="regresarflujo()">Regresar al
+                    detalle</button>
+            </div>
+            <div *ngFor="let item of lista" class="form-goup">
+                <!-- archivos solamente -->
+                <div *ngIf="item.typeValidation === 1">
+                    <div class="form-group">
+                        <label for="file">Choose File</label>
+                        <!--
+                             <input [ngModelOptions]="{standalone: true}" type="file"  (change)="handleFileInput($event.target.files)" multiple
+                            [(ngModel)]="item.answer" />
+                        -->
+                        <input  [ngModelOptions]="{standalone: true}" type="file" (change)="handleFileInput($event.target.files)"   multiple
+                            [(ngModel)]="item.files" />
+                            <div class="alert alert-danger" *ngIf="item.watch === 'S'">{{item.messagewrite}}</div>
+                    </div>
+                </div>
+                <!-- Preguntas cerradas solamente -->
+                <div *ngIf="item.typeValidation === 2 || item.typeValidation === 3">
+                    <div class="form-goup">
+                        <label>{{item.nuOrdering}}. {{item.txQuestions}}</label>
+                    </div>
+                    <div class="form-goup">
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" value="1" id="{{item.cdControlChain}}1"
+                                [(ngModel)]="item.answer" name="{{item.cdControlChain}}" mdbInput>
+                            <label class="custom-control-label" for="{{item.cdControlChain}}1">Si</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" value="0" id="{{item.cdControlChain}}2"
+                                [(ngModel)]="item.answer" name="{{item.cdControlChain}}" mdbInput>
+                            <label class="custom-control-label" for="{{item.cdControlChain}}2">No</label>
+                        </div>
+                        <div class="alert alert-danger" *ngIf="item.watch === 'S'">{{item.messageradio}}</div>
+                        <!-- Preguntas cerradas y observaciones sin requerir lescribir la observacion-->
+                        <div *ngIf="item.typeValidation === 3">
+                            <textarea [(ngModel)]="item.observation" cols="40" rows="3" class="form-control"
+                                [ngModelOptions]="{standalone: true}"></textarea>
+                        </div>
+                        <div class="alert alert-danger" *ngIf="item.writeobs === 'S'">{{item.messagewrite}}</div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-goup">
+                <button type="button" class="btn btn-outline-success navbar-toggler-right btn-default"
+                    style="border-color: black;color:black" (click)="validarRespuestas(lista)">Almacenar
+                    respuestas</button>
+            </div>
+        </div>
+    </div>
+</form>
+<router-outlet></router-outlet>

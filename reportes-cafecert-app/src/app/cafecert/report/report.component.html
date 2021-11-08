@@ -1,0 +1,77 @@
+<div class="container" style="width: 80%">
+    <div class="d-flex justify-content-center">
+        <label style="font-family: Verdana, sans-serif;font-size: 20px;color:#881010">Generar Reportes</label>
+    </div>
+    <div class="row div-solicitud-form div-solicitud-form-label">
+        <div class="col div-solicitud-form-label">
+            <label for="listaPaises">*Reporte</label>
+        </div>
+        <div class="col div-solicitud-input">
+            <select class="form-control select-request" [(ngModel)]="reportId" (change)="onChangeReport()">
+                <option value="0">--Seleccione--</option>
+                <option [value]="report.cdReport" *ngFor="let report of reports">{{report.txName}}</option>
+            </select>
+        </div>
+    </div>
+    <div *ngFor="let filter of report.reportFilters" class="row div-solicitud-form div-solicitud-form-label">
+        <div class="col">
+            <label *ngIf="filter.required=='S'">*</label>
+            <label>{{filter.txLabel}}</label>
+        </div>
+        <div class="col div-solicitud-input" [ngClass]="{'column-checkbox':filter.txInputType=='checkbox' || filter.txInputType=='radio'}">
+            <div *ngIf="filter.txInputType=='text'">
+                <input class="form-control input-request" [(ngModel)]="filter.txValue" type="text" [placeholder]="filter.txLabel"
+                    [required]="filter.required=='S'">
+            </div>
+            <div *ngIf="filter.txInputType=='select'">
+                <select class="form-control select-request" [(ngModel)]="filter.txValue" [required]="filter.required=='S'">
+                    <option value="null">--Seleccione--</option>
+                    <option [value]="values.txValueId" *ngFor="let values of filter.reportFilterValues">{{values.txValueText}}</option>
+                </select>
+            </div>
+            <div *ngIf="filter.txInputType=='checkbox'">
+                <div class="form-check" *ngFor="let values of filter.reportFilterValues">
+                    <label class="form-check-label label-checkbox">
+                        <input type="checkbox" class="form-check-input" (change)="onChangeFilter(filter, values.txValueId, $event)"
+                            [value]="values.txValueId" />
+                        <span class="checkmark"></span>
+                        {{values.txValueText}}
+                    </label>
+                </div>
+            </div>
+            <div *ngIf="filter.txInputType=='radio'">
+                <div class="form-check" *ngFor="let values of filter.reportFilterValues">
+                    <label class="form-check-label">
+                        <input type="radio" class="form-check-input" [(ngModel)]="filter.txValue" [value]="values.txValueId"
+                            [required]="filter.required=='S'" />
+                        {{values.txValueText}}
+                    </label>
+                </div>
+            </div>
+            <div *ngIf="filter.txInputType=='date'">
+                <input type="date" [(ngModel)]="filter.txValue" class="form-control input-date-request">
+            </div>
+            <div *ngIf="filter.txInputType=='select-multiple'">
+                <!-- <select multiple size="filter.reportFilterValues.length" class="form-control input-request" [ngStyle]="{'min-height': filter.reportFilterValues.length<=6?((filter.reportFilterValues.length*20)+14)+'px':'134px'}" style="max-height: 200px">
+                    <option (ngModelChange)="onChangeFilter(filter, values.txValueId, $event)" value="{{values.txValueId}}" *ngFor="let values of filter.reportFilterValues">{{values.txValueText}}</option>
+                </select> -->
+                <mat-form-field style="width: 100%" appearance="fill">
+                    <mat-select multiple [(ngModel)]="filter.txValues">
+                        <!-- <mat-option (click)="onChangeFilter(filter, values.txValueId, $event)" *ngFor="let values of filter.reportFilterValues" [value]="values.txValueId">{{values.txValueText}}</mat-option> -->
+                        <mat-option *ngFor="let values of filter.reportFilterValues" [value]="values.txValueId">{{values.txValueText}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+
+        </div>
+    </div>
+    <form>
+        <div class="row div-solicitud-form">
+            <div class="col justify-content-center">
+                <button class="btn float-right button-download-report" (click)="download()" [disabled]="!validateReport()">Generar
+                    Reporte</button>
+            </div>
+        </div>
+    </form>
+</div>

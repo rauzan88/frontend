@@ -1,0 +1,39 @@
+﻿<app-menu></app-menu>
+
+<div style="background-color: white;padding: 30px;">
+    <div class="table-responsive-xl" >
+        <table class="table table-sm  table-hover">
+            <thead >
+                <tr>
+                    <td ></td>
+                    <td scope="col" colspan="2">Lista de Asignaciones</td>
+                    
+                </tr>
+                <tr>
+                    <td scope="col">Asignación</td>
+                    <td scope="col">Cadena</td>
+                    <td scope="col">Activo</td>
+                    <td scope="col">Solicitud</td>
+                    <td scope="col">Usuario</td>
+                    <th scope="col">Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of lista">
+                    <td>{{item.cdAssignedUser}}</td>
+                    <td>{{item.cdEventChain}}</td>
+                    <td>{{item.active}}</td>
+                    <td>{{item.requestCode}}</td>
+                    <td>{{item.cdUser}}</td>
+                    <th scope="row">{{item.dtCreation}}</th>
+                    <td>
+                        <a class="nav-link" (click)="cambiarCadena(item.cdAssignedUser, item.cdEventChain)">
+                            Cambiar Cadena
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<router-outlet></router-outlet>

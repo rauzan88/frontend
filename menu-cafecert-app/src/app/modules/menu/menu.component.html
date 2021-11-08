@@ -1,0 +1,20 @@
+<nav id="sidebar" style="height: 100%;" [ngClass]="{'active': toggleButton}">
+  <div class="sidebar-header">
+
+  </div>
+
+  <ul class="list-unstyled components">
+    <div *ngFor="let enlace of menu">
+      <li>
+        <a class="btn text-left" (click)="chooseMenu(enlace.url)">{{enlace.item}}</a>
+      </li>
+      <hr style="border-color: white; margin-top:0px; margin-bottom: 0px">
+    </div>
+
+
+    <li>
+      <a class="btn text-left" (click)="logout()">Cerrar Sesión</a>
+    </li>
+    <hr style="border-color: white; margin-top:0px; margin-bottom: 0px">
+  </ul>
+</nav>

@@ -1,0 +1,107 @@
+﻿<div class="container">
+    <div class="d-flex justify-content-center">
+        <label style="font-family: Verdana, sans-serif;font-size: 20px;color:#881010">Lista de Certificados</label><br><br><br>
+        <button *ngIf="txRole == 'AnalistaCertificacion_SICERT'" type="button" style="position:absolute;right: 50px" class="btn button-save-request"
+            (click)="crearcertificado()">
+            Nuevo Certificado
+        </button>
+
+    </div>
+
+    <form class="form-group" [formGroup]="listRequestsForm">
+
+        <div class="row">
+            <div class="col">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-7">
+                        <div class="row">
+                            <div class="col">
+                                <div class="col div-solicitud-input column-checkbox-3">
+                                    <div class="form-check" style="padding-bottom:0.25rem">
+                                        <label class="form-check-label">
+                                            <input type="radio" id="rdresfilto" class="form-check-input"
+                                                formControlName="rdresfilto" value="1">
+                                            Nit
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" id="rdresfilto" class="form-check-input"
+                                                formControlName="rdresfilto" value="2">
+                                            Código Cliente
+                                        </label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div style="position: relative">
+                                    <i class="fas fa-search" style="position: absolute;
+                                                                            padding: 10px;
+                                                                            top:2px;
+                                                                            pointer-events: none;left:  0px;"></i>
+
+                                    <input type="text" style="padding-left:  30px;padding-right: 105px;height: 40px;"
+                                        class="form-control input-request" name="txtfiltro" formControlName="txtfiltro"
+                                        required>
+                                    <div style="position: absolute;right: 0px;top: 0px">
+                                        <button class="btn button-search-request btn-sm"
+                                            style="height: 40px;width: 100px" type="button"
+                                            (click)="onSearch()">Consultar</button><br /><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div *ngIf="isSearch && lista.length == 0" class="alert alert-warning div-alert-error">
+        <i>No se encontró ningún resultado para la búsqueda realizada</i>
+    </div>
+    <br>
+    <br>
+
+    <div *ngIf="lista.length > 0">
+        <table id="tabla-solicitud" datatable class="table table-bordered table-hover table-sm">
+            <thead class="table-header text-center">
+                <tr>
+                    <td scope="col" style="width: 180px;">Certificado </td>
+                    <td scope="col">Cliente</td>
+                    <td scope="col">Estado</td>
+                    <td scope="col">Programa</td>
+                    <td scope="col">Fecha de Otorgamiento</td>
+                    <td scope="col">Fecha de Creación</td>
+                    <td scope="col">Aprobado</td>
+                    <td scope="col" style="width: 120px;">Acciones</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of lista">
+                    <th scope="row" style="text-align:center;">{{ item.txCodCertificate }}</th>
+                    <td>{{ item.txClientName }}</td>
+                    <td>{{ item.txCertificateStatus }}</td>
+                    <td>{{ item.programType }}</td>
+                    <td>{{ changeDate(item.dtGrantCertificate) | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ changeDate(item.dtCreation) | date:'dd/MM/yyyy' }}</td>
+                    <td style="text-align:center;">{{ item.txIsCertified === 'S' ? 'Sí':'No' }}</td>
+                    <td style="text-align:center;">
+                        <button type="button" [ngStyle]="{'display': validaBoton()}" title="listar certificación"
+                            class="btn button-manage" (click)="listarCertificado(item)">
+                            <i style="font-size: 25px; color:#881010" class="far fa-eye"></i>
+                        </button>
+                        <button *ngIf="txRole == 'AnalistaCertificacion_SICERT'" type="button" [ngStyle]="{'display': validaBoton()}" title="Editar certificacion"
+                            class="btn button-manage" (click)="editarCertificado(item)">
+                            <i style="font-size: 25px; color:#881010" class="fas fa-edit"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,59 @@
+<!-- <div class="header-area">
+    <div class="menuContainer">
+        <div class="row t-container">
+            <app-menu sessionId="966C67D95C8951C1CC98D64DB85AB655"></app-menu>
+        </div>
+    </div>
+</div>
+
+<div class="container-menu">
+    <div class="container" style="text-align: center;">
+        <ng-content></ng-content>
+        
+        <br />
+    </div>
+    <app-footer></app-footer>
+</div> -->
+
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <app-menu [sessionId]="sessionId" [toggleButton]="toggleButton" #menu></app-menu>
+    <div (window:resize)="onResize($event)"></div>
+    <!-- Page Content  -->
+    <div id="content" [ngClass]="{'active': toggleButton}">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="btn btn-info" (click)="onToggleButton()">
+                    <!-- <img src="node_modules/menu-cafecert-app/src/assets/images/align-left-solid.svg" style="width: 15px;height: 15px;color:white"> -->
+                    <i class="fas fa-align-left"></i>
+                </button>
+                <img src="node_modules/menu-cafecert-app/src/assets/images/logo1.png" alt="Logo" class="text-left">
+                <img src="node_modules/menu-cafecert-app/src/assets/images/logo2.png" alt="Certificamos el café de Colombia"
+                    class="text-right">
+            </div>
+        </nav>
+
+        <div class="row">
+            <i class="far fa-user-circle" style="font-size:50px;color:#881010;padding-left:40px"></i>
+            <div class="col text-left">
+                <div class="row">
+                    <div class="col">{{menu.user}}</div>
+                </div>
+                <div class="row">
+                    <div class="col">{{menu.role}}</div>
+                </div>
+            </div>
+
+            <div class="col text-right" style="padding-right: 40px;">
+                {{date | date: 'dd/MM/yyyy hh:mm:ss'}}
+            </div>
+        </div>
+        <hr>
+        <ng-content></ng-content>
+        <hr>
+        <app-footer></app-footer>
+    </div>
+
+</div>

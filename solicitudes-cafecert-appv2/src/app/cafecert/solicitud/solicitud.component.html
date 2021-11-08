@@ -1,0 +1,155 @@
+﻿<!-- Formulario de Listado de Solicitudes -->
+
+<div class="container">
+	<div class="d-flex justify-content-center">
+		<label style="font-family: Verdana, sans-serif;font-size: 20px;color:#881010">Listas de Solicitudes</label><br><br><br>
+		<button *ngIf="rol == 'AnalistaProgramacion_SICERT'" type="button" style="position:absolute;right: 50px" class="btn button-save-request" (click)="crearSolicitud()">Crear
+			Solicitud
+		</button>
+	</div>
+
+	<div>
+		<div>
+			<form class="form-group" [formGroup]="listRequestsForm">
+
+				<div class="row">
+					<div class="col">
+						<div class="row d-flex justify-content-center">
+							<div class="col-7">
+								<div class="row">
+									<div class="col">
+										<div class="col div-solicitud-input column-checkbox-3">
+											<div class="form-check" style="padding-bottom:0.25rem">
+												<label class="form-check-label">
+													<input type="radio" id="rdresfilto" class="form-check-input" formControlName="rdresfilto" value="1">
+													Nit
+												</label>
+											</div>
+
+											<div class="form-check">
+												<label class="form-check-label">
+													<input type="radio" id="rdresfilto" class="form-check-input" formControlName="rdresfilto" value="2">
+													Código Cliente
+												</label>
+											</div>
+
+											<div class="form-check">
+												<label class="form-check-label">
+													<input type="radio" id="rdresfilto" class="form-check-input" formControlName="rdresfilto" value="3">
+													Código Solicitud
+												</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">
+										<div style="position: relative">
+											<i class="fas fa-search" style="position: absolute;
+																						padding: 10px;
+																						top:2px;
+																						pointer-events: none;left:  0px;"></i>
+
+											<input type="text" style="padding-left:  30px;padding-right: 105px;height: 40px;" class="form-control input-request"
+											 name="txtfiltro" formControlName="txtfiltro" required>
+											<div style="position: absolute;right: 0px;top: 0px">
+												<button class="btn button-search-request btn-sm" style="height: 40px;width: 100px" type="button" (click)="onSearch()">Consultar</button><br /><br>
+											</div>
+										</div>
+									</div>
+									<!-- <div class="col-2" style="margin:0; padding:0; height:50px;">
+										<div>
+											<button class="btn button-search-request" type="button" (click)="onSearch()">Consultar</button><br /><br>
+										</div>
+
+									</div> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="isSearch && lista.length == 0" class="alert alert-warning div-alert-error">
+					<i>No se encontró ningún resultado para la búsqueda realizada</i>
+				</div>
+				<br>
+				<br>
+				<!-- <div class="row">
+					<div class="col">
+						<button type="button" class="btn button-save-request" (click)="crearSolicitud()">Crear Solicitud
+						</button>
+					</div>
+				</div> -->
+
+				<div *ngIf="lista.length > 0" class="table-responsive-xl">
+					<table id="tabla-solicitud" datatable class="table table-bordered table-hover table-sm">
+						<thead class="table-header text-center">
+							<tr>
+								<!-- <th style="width:5%">Solicitud</th>
+								<th style="width:5%;">Sanitarias</th>
+								<th style="width:10%;">Identificados</th>
+								<th style="width:10%;">Cumple</th>
+								<th style="width:10%;">Cliente</th>
+								<th style="width:10%;">Usuario</th>
+								<th style="width:10%;">Fecha</th>
+								<th style="width:10%;">Acciones</th> -->
+
+
+								<th style="width:6%">Código Solicitud</th>
+								<th style="width:8%">Tipo Solicitud</th>
+								<th style="width:10%">Nombre Cliente</th>
+								<th style="width:12%">Usuario Asignado</th>
+								<th style="width:12%">Estado</th>
+								<th style="width:5%">Fecha Solicitud</th>
+								<th style="width:5%">Fecha Creación</th>
+								<th style="width:15%;">Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let item of lista">
+								<!-- <td>{{item.txCodRequest}}</td>
+								<td>{{item.txSanitaryStd}}</td>
+								<td>{{item.txIdentifyPrc}}</td>
+								<td>{{item.txDeclare}}</td>
+								<td>{{item.cdClient}}</td>
+								<td>{{item.txCreationUser}}</td>
+								<td>{{item.dtCreation | date: 'dd/MM/yyyy hh:mm'}}</td> -->
+
+								<td>{{item.txCodRequest}}</td>
+								<td>{{item.txCertificationType}}</td>
+								<td>{{item.txName}}</td>
+								<td>{{item.txAssignedUser}}</td>
+								<td>{{item.txEventChain}}</td>
+								<td>{{item.dtRequest | date: 'dd/MM/yyyy'}}</td>
+								<td>{{item.dtCreation | date: 'dd/MM/yyyy'}}</td>
+								<td>
+									<!--<button *ngIf="rol != 'AdministradorTI_SICERT'" type="button" [ngStyle]="{'display':dni==item.txCreationUser?'inline':'none'}" title="Modificar" class="btn button-manage"-->
+										<button *ngIf="rol != 'AdministradorTI_SICERT'" type="button"  title="Modificar" class="btn button-manage" (click)="modificarSolicitud(item)">
+										<i class="fas fa-edit" style="font-size:24px; color:#881010"></i>
+									</button>
+									<button type="button" title="Consultar" class="btn button-manage" (click)="verSolicitud(item)">
+										<i class="fas fa-eye" style="font-size:24px; color:#881010"></i>
+									</button>
+									<!--<button type="button" [ngStyle]="{'display':dni==item.txCreationUser?'inline':'none'}" title="Asignar Solicitud" -->
+									<button *ngIf="rol != 'AdministradorTI_SICERT'" type="button" [ngStyle]="{'display': validaBoton()}" title="Asignar Solicitud"
+										class="btn button-manage" (click)="asignarSolicitud(item)">
+										<i style="font-size: 25px; color:#881010" class="fas fa-user-check"></i>
+									</button>
+									<button type="button" title="Nueva evaluación" 
+										[ngStyle]="{'display': validaBoton()}"
+										class="btn button-manage" (click)="nuevaEvaluacion($event,item)">
+										<i class="fas fa-sliders-v" style="font-size:24px; color:#881010"></i>
+									</button>
+
+									<button *ngIf="activeFile" type="button" title="Ver Archivos" class="btn button-manage" (click)="listarArchivos(item.cdRequest)">
+										<i class="fas fa-file-alt" style="font-size:24px; color:#881010"></i>
+									</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>

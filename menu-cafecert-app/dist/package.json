@@ -1,0 +1,19 @@
+{
+  "name": "menu-cafecert-app",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {},
+  "main": "bundles/menu-cafecert-app.umd.js",
+  "module": "fesm5/menu-cafecert-app.js",
+  "es2015": "fesm2015/menu-cafecert-app.js",
+  "esm5": "esm5/menu-cafecert-app.js",
+  "esm2015": "esm2015/menu-cafecert-app.js",
+  "fesm5": "fesm5/menu-cafecert-app.js",
+  "fesm2015": "fesm2015/menu-cafecert-app.js",
+  "typings": "menu-cafecert-app.d.ts",
+  "metadata": "menu-cafecert-app.metadata.json",
+  "sideEffects": false,
+  "peerDependencies": {
+    "tslib": "^1.9.0"
+  }
+}
